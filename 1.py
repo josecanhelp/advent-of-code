@@ -6,5 +6,5 @@ input = [ 1753, 1858, 1860, 1978, 1758, 1847, 2010, 1679, 1222, 1723, 1592, 1992
 def is2020(combo):
     return math.fsum(combo) == 2020
 
-print(math.prod(list(*filter(is2020, itertools.combinations(input, 2))))) # 744475
-print(math.prod(list(*filter(is2020, itertools.combinations(input, 3))))) # 70276940
+print(math.prod(*filter(is2020, itertools.combinations(input, 2)))) # 744475
+print(math.prod(*filter(is2020, itertools.combinations(input, 3)))) # 70276940
