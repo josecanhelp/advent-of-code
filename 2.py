@@ -1,28 +1,39 @@
 import math
+import re
 
 input = open("input-day2.txt", "r")
 
-def sledRentalPolicy(inputDict):
-    return 1 if inputDict["low"] <= len(list(filter(lambda x: x == inputDict["needle"], list(inputDict["haystack"])))) <= inputDict["high"] else 0
+def sledRentalPolicy(row):
+    return 1 if int(row["low"]) <= len(list(filter(lambda x: x == row["needle"], list(row["haystack"])))) <= int(row["high"]) else 0
 
-def tobogganPolicy(inputDict):
-    haystackList = list(inputDict["haystack"])
-    lowIndex = inputDict["low"] - 1
-    highIndex = inputDict["high"] - 1
+def tobogganPolicy(row):
+    haystackList = list(row["haystack"])
+    lowIndex = row["lowindex"]
+    highIndex = row["highindex"]
     lowChar = '-' if (len(haystackList) - 1) < lowIndex else haystackList[lowIndex]
     highChar = '-' if (len(haystackList) - 1) < highIndex else haystackList[highIndex]
-    return 1 if (lowChar == inputDict["needle"]) ^ (highChar == inputDict["needle"]) else 0
+    return 1 if (lowChar == row["needle"]) ^ (highChar == row["needle"]) else 0
 
+def indexedChars(row):
+    return row
+    #  return (list(row['haystack'])[row['lowIndex']], list(row['haystack'])[row['lowIndex']])
 
-def generateDictFor(row):
+def dictForRow(row):
+    matches = re.match(r"(?P<low>\d+)\-(?P<high>\d+) (?P<needle>\w{1})\: (?P<haystack>\w+)", row)
     return {
-        "low": int(row.split(" ")[0].split("-")[0]),
-        "high": int(row.split(" ")[0].split("-")[1]),
-        "needle": row.split(" ")[1].split(":")[0],
-        "haystack": row.split(" ")[2].split("\n")[0],
+        "low": int(matches['low']),
+        "lowindex": int(matches['low']) - 1,
+        "high": int(matches['high']),
+        "highindex": int(matches['high']) - 1,
+        "needle": matches['needle'],
+        "haystack": matches['haystack'],
     }
 
-inputAsDict = list((generateDictFor(x) for x in input))
-print(math.fsum((sledRentalPolicy(x) for x in inputAsDict))) # 603
-print(math.fsum((tobogganPolicy(x) for x in inputAsDict))) # 404
+inputAsDict = list((dictForRow(x) for x in input))
+
+for item in indexedChars(inputAsDict):
+    print(item)
+#  print(list(inputAsDict))
+#  print(math.fsum((sledRentalPolicy(x) for x in inputAsDict))) # 603
+#  print(math.fsum((tobogganPolicy(x) for x in inputAsDict))) # 404
 
