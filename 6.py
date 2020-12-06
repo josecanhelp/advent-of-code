@@ -2,46 +2,19 @@
 import math
 import functools
 
-input = list(open("input-day6.txt", "r"))
+with open("input-day6.txt", "r") as f:
+    input = [line.split() for line in f.read().strip().split("\n\n")]
 
 
-def removeNewline(el):
-    return el.replace('\n', '')
+def getUnique(i):
+    return set(i)
 
 
-def group(seq, sep):
-    g = []
-    for el in seq:
-        if el == sep:
-            yield g
-            g = []
-        if el != sep:
-            g.append(removeNewline(el))
-    yield g
+def findSimilarities(i, j):
+    return set(i) & set(j)
 
 
-def group2(seq, sep):
-    g = []
-    for el in seq:
-        if el == sep:
-            yield g
-            g = []
-        if el != sep:
-            g.append(list(removeNewline(el)))
-    yield g
-
-
-result = list(group(input, '\n'))
-result2 = list(group2(input, '\n'))
-
-a = (''.join(x) for x in result)
-print(math.fsum((len(list(set(list(x)))) for x in a)))  # 3382
-
-
-e = []
-for item in result2:
-    e.append(len(functools.reduce(lambda i, j: set(i) & set(j), item)))
-
-print(math.fsum(e))  # 3382
-
+print(math.fsum((len(getUnique(x))
+                 for x in (''.join(x) for x in input))))  # 3382
+print(math.fsum([len(functools.reduce(findSimilarities, x)) for x in input]))
 # %%
