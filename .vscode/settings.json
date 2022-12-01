@@ -16,5 +16,8 @@
         "titleBar.inactiveBackground": "#fce17199",
         "titleBar.inactiveForeground": "#15202b99"
     },
-    "peacock.color": "#fce171"
+    "peacock.color": "#fce171",
+    "cSpell.words": [
+        "Tupelizer"
+    ]
 }
